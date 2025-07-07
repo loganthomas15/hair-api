@@ -1,9 +1,19 @@
 from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from transformers import ViTForImageClassification, ViTImageProcessor
 from PIL import Image
 import torch
 
 app = FastAPI()
+
+# Add CORS middleware to allow all origins (for testing)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change "*" to your frontend URL in production for security
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 model = ViTForImageClassification.from_pretrained("lthomas8/hair_type_classifier")
 processor = ViTImageProcessor.from_pretrained("lthomas8/hair_type_classifier")
